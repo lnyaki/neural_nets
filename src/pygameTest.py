@@ -1,16 +1,44 @@
 import pygame
 
-pygame.init()
+def startGame():
+	pygame.init()
 
-white = (255,255, 255)
-black = (0,0,0)
+	gameDisplay = initializeGameDisplay()
+	pixelArray 	= pygame.PixelArray(gameDisplay)
 
-gameDisplay = pygame.display.set_mode((800,600))
+	drawShapes(pixelArray)
+	
+	while True:
+		manageGameEvents(pygame)	
+		pygame.display.update()
 
-gameDisplay.fill(black)
+def drawShapes(pixelArray):
+	white 	= (255,255, 255)
+	blue	= (0,0,255)
+	green 	= (0,255,0)
+	red		= (255,0,0)
+	
+	pixelArray[10][20] = green
 
-pixelArray = pygame.PixelArray(gameDisplay)
+	pygame.draw.line(gameDisplay,blue, (100,200), (400,500),10)
+	pygame.draw.rect(gameDisplay,red,(400,400,50, 25))
+	pygame.draw.circle(gameDisplay,white,(150,150),75)
 
-while True:
-	manageGameEvents()	
-	pygame.display.update()
+def initializeGameDisplay():
+	black = (0,0,0)
+	gameDisplay = pygame.display.set_mode((800,600))
+	gameDisplay.fill(black)
+
+	return gameDisplay
+
+def manageGameEvents(pygame):
+
+	for event in pygame.event.get():
+		if event.type == pygame.QUIT:
+			pygame.quit()
+			quit()
+
+
+
+if __name__ == "__main__":
+	startGame()
