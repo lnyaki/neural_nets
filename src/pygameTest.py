@@ -12,12 +12,14 @@ def startGame():
 		manageGameEvents(pygame)	
 		pygame.display.update()
 
+		
+
 def drawShapes(pixelArray):
 	white 	= (255,255, 255)
 	blue	= (0,0,255)
 	green 	= (0,255,0)
 	red		= (255,0,0)
-	
+
 	pixelArray[10][20] = green
 
 	pygame.draw.line(gameDisplay,blue, (100,200), (400,500),10)
