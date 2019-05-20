@@ -1,8 +1,8 @@
 import pygame
 
 class ArtificialNeuron:
-
 	position 	= None
+	mass 		= 100
 	energy		= 40
 	actionPoints= 10
 	activationCharge = 0
@@ -28,12 +28,31 @@ class ArtificialNeuron:
 		}
 	}
 
-	def __init__(self, position):
-		self.position 		= position
+	def __init__(self, position, id):
+		self.position 	= position
+		self.id 		= id
+		self.futureMove = (0,0)
 
+	def applyMove(self):
+		print("Position : "+str(self.position)+ "	Move by VECTOR "+str(self.futureMove))
+		newPosition 	= self.addVector(self.futureMove)
+		self.futureMove = (0,0)
+		self.position 	= newPosition
+		print("new position "+str(self.position))
 
-	def move(self):
-		pass
+	def setFutureMove(self,vector):
+		self.futureMove = vector
+
+	def addVector(self,vector):
+		return (self.position[0] + vector[0], self.position[1] + vector[1])
+
+	def getDistanceVector(self,neuron):
+		print("Neuron 1 : "+str(neuron1.position))
+		print("Neuron 2 : "+str(neuron2.position))
+		return (neuron.position[0] - self.position[0], neuron.position[1] - self.position[1])
+
+	def collision(self,neuron):
+		return 
 
 	def neuronDivision(self):
 		return ArtificialNeuron(self.position)
@@ -46,8 +65,10 @@ class ArtificialNeuron:
 
 		self.positionNeuronWithinWindow(gameDisplay, computedNeuronDrawRadius)
 
-		pygame.draw.circle(gameDisplay,blue,self.position,computedNeuronDrawRadius)
-		pygame.draw.circle(gameDisplay,white,self.position,computedNeuronDrawRadius,5)
+		### Round ! int(round(number))
+		position = (int(round(self.position[0])),int(round(self.position[1])))
+		pygame.draw.circle(gameDisplay,blue,position,computedNeuronDrawRadius)
+		pygame.draw.circle(gameDisplay,white,position,computedNeuronDrawRadius,5)
 
 	def positionNeuronWithinWindow(self, gameDisplay, computedNeuronDrawRadius):
 		displayWidth, displayHeight = gameDisplay.get_size()
