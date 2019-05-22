@@ -31,7 +31,9 @@ def startGame():
 		manageGameEvents(pygame)
 
 		setNeuronMovements(neurons)
+		print("---------------- Neuron Movements calculated")
 		applyNeuronMovements(neurons)
+		print("---------------- Neuron Movements applied")
 		drawNeurons(gameDisplay, neurons)
 
 		pygame.display.update()
@@ -63,36 +65,51 @@ def setSingleNeuronMovement(neuron, neuronList):
 		movementVector = getMovementVector(movementAngle,finalGravityVector,movementDistance)
 		neuron.setFutureMove(movementVector)
 
+
 def applyNeuronMovements(neurons):
+	print("------- Apply neuron movements, inside")
+	print("------- List of neurons to move")
+	print(neurons)
+
 	for neuron in neurons:
+		print("loop "+str(neuron.id))
 		if not isNeuronCollision(neuron,neurons):
 			neuron.applyMove()
+			print("---- Apply move ---")
 
 		else :
+			print("collision!")
 			pass
 
+	print("applyNeuronMovments : end of loop")
 
 
 def isNeuronCollision(originalNeuron,neuronList):
 	collision 	= False
 	exit 		= False
 	i 			= 0
-	total 		= neuronList.len()
+	total 		= len(neuronList)
 
 	while not exit:
+
 		neuron = neuronList[i]
 
-		if neuron.id == originalNeuron.id :
-			continue
+		print("length : "+str(total)+" i :"+str(i)+" neuron.id : "+str(neuron.id))
 
-		if originalNeuron.collision(neuron):
+		collisionWithOtherNeuron = (neuron.id != originalNeuron.id) and  originalNeuron.collision(neuron)
+		
+		if collisionWithOtherNeuron :
 			collision 	= True
 			exit 		= True
 
 		i += 1
-
+		
+		print("---	i : "+str(i)+" 	total : "+str(total))
 		if i >= total :
 			exit = True
+
+	print("End of neuron collision")
+	return collision
 
 def getMovementVector(angle, vector, distance):
 	return (math.cos(angle)*distance,math.sin(angle)*distance)

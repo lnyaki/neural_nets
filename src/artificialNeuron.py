@@ -52,7 +52,7 @@ class ArtificialNeuron:
 		return (neuron.position[0] - self.position[0], neuron.position[1] - self.position[1])
 
 	def collision(self,neuron):
-		return 
+		return False
 
 	def neuronDivision(self):
 		return ArtificialNeuron(self.position)
