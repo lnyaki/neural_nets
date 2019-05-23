@@ -1,9 +1,6 @@
 import pygame
 import random
-import copy
-import functools
-import math
-
+import vectorOperations
 from artificialNeuron import ArtificialNeuron
 
 neurons = None
@@ -11,10 +8,10 @@ GRAVITY = 10
 
 def startGame():
 	pygame.init()
-
+	totalNeurons 	= 4
 	gameDisplay 	= initializeGameDisplay()
 	pixelArray 		= pygame.PixelArray(gameDisplay)
-	totalNeurons 	= 5
+	
 	neurons 		= generateNeurons(totalNeurons)
 
 	drawNeurons(gameDisplay, neurons)
@@ -47,11 +44,11 @@ def setNeuronMovements(neurons):
 
 
 def setSingleNeuronMovement(neuron, neuronList):
-	gravityVectors 		= computeGravityVectors(neuron, neuronList)
-	finalGravityVector	= addVectorList(gravityVectors)
+	gravityVectors 		= vectorOperations.computeGravityVectors(neuron, neuronList)
+	finalGravityVector	= vectorOperations.addVectorList(gravityVectors)
 
-	movementAngle 		= getVectorAngle(finalGravityVector)
-	distanceScalar		= getScalarDistance(finalGravityVector)
+	movementAngle 		= vectorOperations.getVectorAngle(finalGravityVector)
+	distanceScalar		= vectorOperations.getScalarDistance(finalGravityVector)
 	'''multiplier = 10/distanceScalar
 	movementVector = scalarVectorMultiplication(finalGravityVector, multiplier)
 
@@ -62,9 +59,12 @@ def setSingleNeuronMovement(neuron, neuronList):
 	movementDistance = 1
 
 	if movementDistance <  distanceScalar :
-		movementVector = getMovementVector(movementAngle,finalGravityVector,movementDistance)
-		neuron.setFutureMove(movementVector)
+		movementVector = vectorOperations.getMovementVector(movementAngle,finalGravityVector,movementDistance)
 
+	else :
+		movementVector = finalGravityVector
+
+	neuron.setFutureMove(movementVector)
 
 def applyNeuronMovements(neurons):
 	print("------- Apply neuron movements, inside")
@@ -94,8 +94,6 @@ def isNeuronCollision(originalNeuron,neuronList):
 
 		neuron = neuronList[i]
 
-		print("length : "+str(total)+" i :"+str(i)+" neuron.id : "+str(neuron.id))
-
 		collisionWithOtherNeuron = (neuron.id != originalNeuron.id) and  originalNeuron.collision(neuron)
 		
 		if collisionWithOtherNeuron :
@@ -103,62 +101,14 @@ def isNeuronCollision(originalNeuron,neuronList):
 			exit 		= True
 
 		i += 1
-		
-		print("---	i : "+str(i)+" 	total : "+str(total))
+
 		if i >= total :
 			exit = True
 
 	print("End of neuron collision")
 	return collision
 
-def getMovementVector(angle, vector, distance):
-	return (math.cos(angle)*distance,math.sin(angle)*distance)
 
-def getVectorAngle(vector):
-	return math.atan2(vector[1],vector[0])
-
-def computeGravityVectors(originalNeuron, neuronList):
-	allGravityVectors = []
-
-	for neuron in neuronList:
-		if originalNeuron.id == neuron.id : continue
-
-		gravityVector = computeSingleGravityVector(originalNeuron,neuron)
-		allGravityVectors.append(gravityVector)
-
-	return allGravityVectors
-
-def computeSingleGravityVector(neuron1,neuron2):
-	distanceVector 	= getDistanceVector(neuron1,neuron2)
-	distanceScalar	= getScalarDistance(distanceVector)
-	angle 			= math.atan2(distanceVector[0], distanceVector[1])
-	print("Distance vector between neurons : "+str(distanceVector))
-	#return 1+ getGravityScalar(distanceScalar,neuron1.mass, neuron2.mass)
-	return distanceVector
-
-def scalarVectorMultiplication(vector, multiplier):
-	return (vector[0] * multiplier,vector[1] * multiplier)
-
-def getGravityScalar(distance, mass1, mass2):
-	return (GRAVITY * mass1 * mass2)/ (distance ** 2)
-
-def getScalarDistance(vector):
-	return math.sqrt((vector[0] ** 2) + (vector[1] ** 2))
-
-def getDistanceVector(neuron1, neuron2):
-	print("Neuron 1 : "+str(neuron1.position))
-	print("Neuron 2 : "+str(neuron2.position))
-	return (neuron2.position[0] - neuron1.position[0], neuron2.position[1] - neuron1.position[1])
-
-def addVectorList(vectorList):
-	print("Vector List")
-	print(vectorList)
-	return functools.reduce(addVectors, vectorList)
-
-def addVectors(vector1, vector2):
-	print(vector1)
-	print(vector2)
-	return (vector1[0] + vector2[0], vector1[1] + vector2[1])
 
 def generateNeurons(totalNeurons):
 	neuronList = []

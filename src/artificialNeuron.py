@@ -1,12 +1,19 @@
 import pygame
+import vectorOperations
 
 class ArtificialNeuron:
-	position 	= None
-	mass 		= 100
-	energy		= 40
-	actionPoints= 10
-	activationCharge = 0
-	defaultDrawSize = 30
+	MINIMAL_MOVEMENT = (0.01,0.01)
+	numberOfDecimals = 4
+
+	position 			= None
+	previousPosition 	= None
+	previousMovement 	= (0,0)
+	mass 				= 100
+	energy				= 40
+	actionPoints 		= 10
+	activationCharge 	= 0
+	defaultDrawSize 	= 30
+
 	conditions = {
 		"reproductionEnergy" : 60
 	}
@@ -35,13 +42,37 @@ class ArtificialNeuron:
 
 	def applyMove(self):
 		print("Position : "+str(self.position)+ "	Move by VECTOR "+str(self.futureMove))
-		newPosition 	= self.addVector(self.futureMove)
-		self.futureMove = (0,0)
-		self.position 	= newPosition
-		print("new position "+str(self.position))
+
+		#if(self.minimalMovementAchieved(self.futureMove) and vectorOperations.vectorBiggerThan(self.futureMove,(1,1))):
+		if(self.minimalMovementAchieved(self.futureMove)):
+
+			
+			if not vectorOperations.isOppositeVector(self.previousMovement,self.futureMove):
+				print("Not opposite "+str(self.previousMovement)+" "+str(self.futureMove))
+
+				newPosition 	= vectorOperations.roundVector(self.addVector(self.futureMove),self.numberOfDecimals)
+				self.position 	= newPosition
+				
+			else :
+				print("Opposite movements vectors. Half movement "+str(self.position)+" "+str(self.previousMovement)+" "+str(self.futureMove))
+				halfMovement 	= vectorOperations.divideVectorBy(self.futureMove,2)
+				print("Half Movement : "+str(halfMovement))
+				self.position 	= vectorOperations.roundVector(self.addVector(halfMovement),self.numberOfDecimals)
+
+			print("new position "+str(self.position))
+
+		else : print("No movement : "+str(self.futureMove))
+
+		self.previousMovement 	= self.futureMove
+		self.futureMove 		= (0,0)
+
+
+	def minimalMovementAchieved(self, movementVector):
+		return vectorOperations.vectorBiggerThan(movementVector, self.MINIMAL_MOVEMENT)
 
 	def setFutureMove(self,vector):
-		self.futureMove = vector
+		numberOfDecimals 	= 4
+		self.futureMove 	= vectorOperations.roundVector(vector, numberOfDecimals)
 
 	def addVector(self,vector):
 		return (self.position[0] + vector[0], self.position[1] + vector[1])
