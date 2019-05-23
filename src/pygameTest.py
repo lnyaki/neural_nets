@@ -12,19 +12,21 @@ def startGame():
 	gameDisplay 	= initializeGameDisplay()
 	pixelArray 		= pygame.PixelArray(gameDisplay)
 	
-	neurons 		= generateNeurons(totalNeurons)
+	neurons 		= testGenerateNeurons2(totalNeurons)
 
 	drawNeurons(gameDisplay, neurons)
 
 	i = 0
+
 	while True:
 		
-
-		if i >= 10000 : continue
+		if i >= 30000 : continue
 
 		i += 1
+
 		print("*************************************************")
 		gameDisplay.fill((0,0,0))
+		
 		manageGameEvents(pygame)
 
 		setNeuronMovements(neurons)
@@ -36,6 +38,24 @@ def startGame():
 		pygame.display.update()
 		print("-- --")
 
+def testGenerateNeurons(whatever):
+	neurons = []
+
+	neurons.append(ArtificialNeuron( (400,200) ,1))
+	neurons.append(ArtificialNeuron( (400,400) ,2))
+	neurons.append(ArtificialNeuron( (400,100) ,3))
+	neurons.append(ArtificialNeuron( (100,200) ,4))
+
+	return neurons
+
+def testGenerateNeurons2(whatever):
+	neurons = []
+
+	neurons.append(ArtificialNeuron( (410,501) ,1))
+	neurons.append(ArtificialNeuron( (400,440) ,2))
+	neurons.append(ArtificialNeuron( (450,107) ,3))
+	neurons.append(ArtificialNeuron( (104,218) ,4))
+	return neurons
 
 def setNeuronMovements(neurons):
 
@@ -49,12 +69,6 @@ def setSingleNeuronMovement(neuron, neuronList):
 
 	movementAngle 		= vectorOperations.getVectorAngle(finalGravityVector)
 	distanceScalar		= vectorOperations.getScalarDistance(finalGravityVector)
-	'''multiplier = 10/distanceScalar
-	movementVector = scalarVectorMultiplication(finalGravityVector, multiplier)
-
-	print(" *** Distance scalar : "+str(distanceScalar))
-	print(" *** MOVEMENT : "+ str(movementVector))
-	'''
 
 	movementDistance = 1
 

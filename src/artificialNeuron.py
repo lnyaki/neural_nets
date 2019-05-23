@@ -46,8 +46,9 @@ class ArtificialNeuron:
 		#if(self.minimalMovementAchieved(self.futureMove) and vectorOperations.vectorBiggerThan(self.futureMove,(1,1))):
 		if(self.minimalMovementAchieved(self.futureMove)):
 
+			roundingDecimals = 2
 			
-			if not vectorOperations.isOppositeVector(self.previousMovement,self.futureMove):
+			if not vectorOperations.isOppositeVector(self.previousMovement,self.futureMove, roundingDecimals):
 				print("Not opposite "+str(self.previousMovement)+" "+str(self.futureMove))
 
 				newPosition 	= vectorOperations.roundVector(self.addVector(self.futureMove),self.numberOfDecimals)

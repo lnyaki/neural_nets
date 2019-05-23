@@ -44,12 +44,12 @@ def computeGravityVectors(originalNeuron, neuronList):
 	for neuron in neuronList:
 		if originalNeuron.id == neuron.id : continue
 
-		gravityVector = computeSingleGravityVector(originalNeuron,neuron)
+		gravityVector = getVectorDistance(originalNeuron,neuron)
 		allGravityVectors.append(gravityVector)
 
 	return allGravityVectors
 
-def computeSingleGravityVector(neuron1,neuron2):
+def getVectorDistance(neuron1,neuron2):
 	decimals = 4
 	distanceVector 	= getDistanceVector(neuron1,neuron2)
 	distanceScalar	= getScalarDistance(distanceVector)
@@ -64,15 +64,15 @@ def roundVector(vector, numberOfDecimals):
 def vectorBiggerThan(vector1,vector2):
 	vector1 = absoluteValueVector(vector1)
 	vector2 = absoluteValueVector(vector2)
-	return (vector1[0]> vector2[0]) or (vector1[1] < vector2[1])
+	return (vector1[0]> vector2[0]) or (vector1[1] > vector2[1])
 
 def absoluteValueVector(vector):
 	return (absoluteValue(vector[0]), absoluteValue(vector[1]))
 def absoluteValue(number):
 	return math.sqrt(number ** 2)
 
-def isOppositeVector(vector1, vector2):
-	return (vector1[0] + vector2[0] == 0) and (vector1[1] + vector2[1] == 0)
+def isOppositeVector(vector1, vector2, rounding = 4):
+	return (round(vector1[0],rounding) + round(vector2[0], rounding) == 0) and (round(vector1[1], rounding) + round(vector2[1],rounding) == 0)
 
 def divideVectorBy(vector, divider):
 	return (vector[0]/divider, vector[1]/divider)
