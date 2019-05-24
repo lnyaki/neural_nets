@@ -32,6 +32,9 @@ class NNLayer():
 	def getNeuronSpacingVector(self):
 		return (0, self.NEURON_SPACING)
 
+	def append(self,neuron):
+		self.neurons.append(neuron)
+
 	def draw(self,gameDisplay):
 		for neuron in self.neurons:
 			neuron.draw(gameDisplay)
