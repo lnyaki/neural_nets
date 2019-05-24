@@ -12,9 +12,15 @@ def startGame():
 	gameDisplay 	= initializeGameDisplay()
 	pixelArray 		= pygame.PixelArray(gameDisplay)
 	
+	'''
 	neurons 		= testGenerateNeurons2(totalNeurons)
 
 	drawNeurons(gameDisplay, neurons)
+	'''
+
+	layerPosition = (100,100)
+	layer = nnLayer(layerPosition,totalNeurons)
+	neuralNet = None
 
 	i = 0
 
@@ -26,14 +32,15 @@ def startGame():
 
 		print("*************************************************")
 		gameDisplay.fill((0,0,0))
-		
-		manageGameEvents(pygame)
 
+		manageGameEvents(pygame)
+'''
 		setNeuronMovements(neurons)
 		print("---------------- Neuron Movements calculated")
 		applyNeuronMovements(neurons)
 		print("---------------- Neuron Movements applied")
 		drawNeurons(gameDisplay, neurons)
+'''
 
 		pygame.display.update()
 		print("-- --")

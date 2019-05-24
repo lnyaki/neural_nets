@@ -1,4 +1,5 @@
 import pygame
+import pygame.gfxdraw
 import vectorOperations
 
 class ArtificialNeuron:
@@ -91,16 +92,20 @@ class ArtificialNeuron:
 
 	def draw(self, gameDisplay):
 		white 	= (255,255, 255)
-		blue	= (0,0,255)
+		blue	= (0,100,150,200)
 
-		computedNeuronDrawRadius = self.defaultDrawSize+(int(self.energy/10))
+		borderThickness = 2
+		computedNeuronDrawRadius = self.defaultDrawSize
 
 		self.positionNeuronWithinWindow(gameDisplay, computedNeuronDrawRadius)
 
 		### Round ! int(round(number))
 		position = (int(round(self.position[0])),int(round(self.position[1])))
 		pygame.draw.circle(gameDisplay,blue,position,computedNeuronDrawRadius)
-		pygame.draw.circle(gameDisplay,white,position,computedNeuronDrawRadius,5)
+		#pygame.draw.circle(gameDisplay,white,position,computedNeuronDrawRadius,borderThickness)
+
+		pygame.gfxdraw.aacircle(gameDisplay,position[0],position[1],computedNeuronDrawRadius, white)
+		#pygame.gfxdraw.filled_circle(gameDisplay,position[0],position[1],computedNeuronDrawRadius, white)
 
 	def positionNeuronWithinWindow(self, gameDisplay, computedNeuronDrawRadius):
 		displayWidth, displayHeight = gameDisplay.get_size()
