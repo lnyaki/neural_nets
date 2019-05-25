@@ -13,6 +13,7 @@ class ArtificialNeuron:
 	activationCharge 	= 0
 	defaultDrawSize 	= 30
 
+	connectedNeurons 	= []
 	layerID = 0
 
 	conditions = {
@@ -90,6 +91,9 @@ class ArtificialNeuron:
 
 	def neuronDivision(self):
 		return ArtificialNeuron(self.position)
+
+	def connectToNeuron(self,targetNeuron):
+		self.connectedNeurons.append(targetNeuron)
 
 	def draw(self, gameDisplay):
 		white 	= (255,255, 255)

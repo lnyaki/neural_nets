@@ -14,6 +14,14 @@ class NNLayer():
 		self.position 	= startPosition
 		self.neurons 	= self.generateNeurons(startPosition,layerSize, neuronSize)
 
+	def __str__(self):
+		result = "["+str(self.layerIndex)+"]"
+
+		for neuron in self.neurons:
+			result = result + "O "
+
+		return result
+
 	def generateNeurons(self,layerStartPosition,layerSize,neuronSize):
 		neuronList = []
 
