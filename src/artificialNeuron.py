@@ -9,11 +9,11 @@ class ArtificialNeuron:
 	position 			= None
 	previousPosition 	= None
 	previousMovement 	= (0,0)
-	mass 				= 100
-	energy				= 40
-	actionPoints 		= 10
+
 	activationCharge 	= 0
 	defaultDrawSize 	= 30
+
+	layerID = 0
 
 	conditions = {
 		"reproductionEnergy" : 60
@@ -36,10 +36,11 @@ class ArtificialNeuron:
 		}
 	}
 
-	def __init__(self, position, id):
+	def __init__(self, position, id, layerID = 0):
 		self.position 	= position
 		self.id 		= id
 		self.futureMove = (0,0)
+		self.layerID = layerID
 
 	def applyMove(self):
 		print("Position : "+str(self.position)+ "	Move by VECTOR "+str(self.futureMove))

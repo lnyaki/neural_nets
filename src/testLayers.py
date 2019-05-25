@@ -6,9 +6,10 @@ from nnLayer import NNLayer
 from neuralNet import NeuralNet
 
 def startGame():
+	WINDOW_SIZE = (1000,800)
 	pygame.init()
 	totalNeurons 	= 4
-	gameDisplay 	= initializeGameDisplay()
+	gameDisplay 	= initializeGameDisplay(WINDOW_SIZE)
 	pixelArray 		= pygame.PixelArray(gameDisplay)
 
 	'''
@@ -21,7 +22,7 @@ def startGame():
 	layer3 			= NNLayer(layerPosition3,2)
 	neuralNet 		= [layer,layer2,layer3]
 	'''
-	neuralNetPosition = (100,100)
+	neuralNetPosition = (300,250)
 	layersStructure = [5,4,3]
 	neuralNet = NeuralNet(neuralNetPosition,layersStructure)
 
@@ -37,9 +38,9 @@ def drawNeuralNet(layers, gameDisplay):
 	for layer in layers:
 		layer.draw(gameDisplay)
 
-def initializeGameDisplay():
+def initializeGameDisplay(WINDOW_SIZE):
 	black = (0,0,0)
-	gameDisplay = pygame.display.set_mode((800,600))
+	gameDisplay = pygame.display.set_mode(WINDOW_SIZE)
 	gameDisplay.fill(black)
 
 	return gameDisplay
