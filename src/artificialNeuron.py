@@ -13,9 +13,14 @@ class ArtificialNeuron:
 	activationCharge 	= 0
 	defaultDrawSize 	= 30
 
-	connectedNeurons 	= []
+	connectedNeurons 	= None
 	layerID = 0
 	id 		= 0
+
+	# Colors
+	WHITE 	= (255,255, 255)
+	BLUE	= (0,100,150,200)
+	YELLOW	= (255,255,50)
 
 	conditions = {
 		"reproductionEnergy" : 60
@@ -42,7 +47,8 @@ class ArtificialNeuron:
 		self.position 	= position
 		self.id 		= id
 		self.futureMove = (0,0)
-		self.layerID = layerID
+		self.layerID 	= layerID
+		self.connectedNeurons 	= []
 
 	def applyMove(self):
 		print("Position : "+str(self.position)+ "	Move by VECTOR "+str(self.futureMove))
@@ -98,9 +104,12 @@ class ArtificialNeuron:
 
 		self.connectedNeurons.append(targetNeuron)
 
-	def draw(self, gameDisplay):
-		white 	= (255,255, 255)
-		blue	= (0,100,150,200)
+
+	def draw(self,gameDisplay):
+		self.drawNeuronBody(gameDisplay)
+		self.drawNeuronConnections(gameDisplay)
+
+	def drawNeuronBody(self, gameDisplay):
 
 		borderThickness = 2
 		computedNeuronDrawRadius = self.defaultDrawSize
@@ -109,11 +118,20 @@ class ArtificialNeuron:
 
 		### Round ! int(round(number))
 		position = (int(round(self.position[0])),int(round(self.position[1])))
-		pygame.draw.circle(gameDisplay,blue,position,computedNeuronDrawRadius)
+		pygame.draw.circle(gameDisplay,self.BLUE,position,computedNeuronDrawRadius)
 		#pygame.draw.circle(gameDisplay,white,position,computedNeuronDrawRadius,borderThickness)
 
-		pygame.gfxdraw.aacircle(gameDisplay,position[0],position[1],computedNeuronDrawRadius, white)
+		pygame.gfxdraw.aacircle(gameDisplay,position[0],position[1],computedNeuronDrawRadius, self.WHITE)
 		#pygame.gfxdraw.filled_circle(gameDisplay,position[0],position[1],computedNeuronDrawRadius, white)
+
+
+
+	def drawNeuronConnections(self,gameDisplay):
+		for neuron in self.connectedNeurons:
+			x1,y1 = self.position
+			x2,y2 = neuron.position 
+
+			pygame.gfxdraw.line(gameDisplay,x1,y1,x2,y2,self.YELLOW)
 
 	def positionNeuronWithinWindow(self, gameDisplay, computedNeuronDrawRadius):
 		displayWidth, displayHeight = gameDisplay.get_size()

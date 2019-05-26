@@ -8,12 +8,13 @@ class NeuralNet():
 	SPACE_BETWEEN_NEURONS 	= 10
 
 	LAYER_CONNECTION_DEPH	= 1
-	MAX_NEURON_CONNECTIONS 	= 4
+	MAX_NEURON_CONNECTIONS 	= None
 
 	position = None
 	layers = []
 
-	def __init__(self, position, neuronsPerLayers):
+	def __init__(self, position, neuronsPerLayers, maxNeuronConnections = 4):
+		self.MAX_NEURON_CONNECTIONS = maxNeuronConnections
 		self.position 	= position
 		self.layers 	= self.generateLayers(neuronsPerLayers)
 		self.connectAllLayers()
@@ -99,6 +100,7 @@ class NeuralNet():
 				numberOfLayerConnections = listNumberOfConnectionsToLayers[i]
 
 				self.connectNeuronToSingleLayer(neuron,layer,numberOfLayerConnections)
+				print("Neuron ("+str(neuron.layerID)+" | "+str(neuron.id)+") Total Connections : "+str(len(neuron.connectedNeurons)))
 
 
 	def connectNeuronToSingleLayer(self,neuron,layer,numberOfNeuronConnections):

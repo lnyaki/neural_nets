@@ -9,7 +9,7 @@ from neuralNet import NeuralNet
 
 class NeuralNetTest(unittest.TestCase):
 
-	def RightNumberOfLayersIsGenerated(self):
+	def testRightNumberOfLayersIsGenerated(self):
 
 		print("------==== Test rightNumberOfLayersIsGenerated ======-----")
 		layerMap = [4,4,4]
@@ -18,7 +18,7 @@ class NeuralNetTest(unittest.TestCase):
 
 		self.assertEqual(3,len(nn.layers))
 
-	def DistributeConnectionsToLayers(self):
+	def testDistributeConnectionsToLayers(self):
 		layerMap 	= [4,3,4]
 		nn 			= NeuralNet((0,0),layerMap)
 
@@ -68,7 +68,7 @@ class NeuralNetTest(unittest.TestCase):
 		self.assertEqual(len(result),numberOfNeuronConnections-1)
 		print("------==== After getClosestNeurons ====-------")
 
-	def ShiftRange(self):
+	def testShiftRange(self):
 		print()
 		print("||||||| ------======= Shift Range")
 		numRange = [0,1,2]
@@ -89,8 +89,19 @@ class NeuralNetTest(unittest.TestCase):
 		self.assertEqual(result,[-1,0,1])
 
 
-	def initNeuralNet(self,layerMap):
-		return NeuralNet((0,0),layerMap)
+	def initNeuralNet(self,layerMap, maxConnections = 4):
+		return NeuralNet((0,0),layerMap,maxConnections)
+
+	def testNumberOfConnections(self):
+		connectionsPerNeuron = 4
+		nn = self.initNeuralNet([4,4,4],connectionsPerNeuron)
+
+		layers = nn.layers 
+
+		for layer in layers:
+			for n in layer.neurons:
+				self.assertLessEqual(len(n.connectedNeurons),connectionsPerNeuron)
+
 
 if __name__ == '__main__':
 	unittest.main()
