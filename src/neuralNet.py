@@ -8,7 +8,7 @@ class NeuralNet():
 	SPACE_BETWEEN_NEURONS 	= 10
 
 	LAYER_CONNECTION_DEPH	= 1
-	MAX_NEURON_CONNECTIONS 	= 3
+	MAX_NEURON_CONNECTIONS 	= 4
 
 	position = None
 	layers = []
@@ -87,8 +87,9 @@ class NeuralNet():
 
 
 	def connectNeuronToLayers(self,neuron,layersToConnect, listNumberOfConnectionsToLayers):
+		print()
 		print("ConnectNeuronToLayer : layers to connect "+str(len(listNumberOfConnectionsToLayers)))
-		print(listNumberOfConnectionsToLayers[0])
+
 
 		if len(listNumberOfConnectionsToLayers) > 0:
 			
@@ -125,13 +126,14 @@ class NeuralNet():
 			else:
 				neuronRange = list(range(neuronIndex - halfConnections, neuronIndex+halfConnections+1))
 
+
 			if(neuronRange and (neuronRange[0])< 0):
 				neuronRange = self.shiftRange(neuronRange, (neuronRange[0]*-1))
 
 			elif (neuronRange and (neuronRange[-1])>= len(layer.neurons)):
-				neuronRange = self.shiftRange(neuronRange, (len(layer.neurons) - neuronRange[-1]))
+				neuronRange = self.shiftRange(neuronRange, ((len(layer.neurons)-1) - neuronRange[-1]))
 
-			print("Neuron Index : "+str(neuronIndex)+" Neuron Range : "+str(neuronRange))
+			print("Neuron Index : "+str(neuronIndex)+" Neuron Range : "+str(neuronRange)+" NeuronList length : "+str(len(layer.neurons)))
 			neurons = self.getSpecificNeurons(neuronRange, layer.neurons)
 			
 		return neurons 

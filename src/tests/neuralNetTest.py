@@ -50,7 +50,7 @@ class NeuralNetTest(unittest.TestCase):
 
 	def testGetClosestNeurons(self):
 		numberOfNeuronConnections = 4
-		layerMap 	= [4,3,4]
+		layerMap 	= [5,4,3,4]
 		nn = self.initNeuralNet(layerMap)
 
 		layerSize 	= 4
