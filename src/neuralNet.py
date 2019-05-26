@@ -5,10 +5,10 @@ import math
 
 class NeuralNet():
 	SPACE_BETWEEN_LAYERS 	= 200
-	SPACE_BETWEEN_NEURONS 	= 50
+	SPACE_BETWEEN_NEURONS 	= 10
 
 	LAYER_CONNECTION_DEPH	= 1
-	MAX_NEURON_CONNECTIONS 	= 4
+	MAX_NEURON_CONNECTIONS 	= 3
 
 	position = None
 	layers = []
@@ -85,7 +85,11 @@ class NeuralNet():
 		return layersConnectionList
 
 
+
 	def connectNeuronToLayers(self,neuron,layersToConnect, listNumberOfConnectionsToLayers):
+		print("ConnectNeuronToLayer : layers to connect "+str(len(listNumberOfConnectionsToLayers)))
+		print(listNumberOfConnectionsToLayers[0])
+
 		if len(listNumberOfConnectionsToLayers) > 0:
 			
 			for i in range(len(layersToConnect)):
@@ -98,13 +102,11 @@ class NeuralNet():
 
 	def connectNeuronToSingleLayer(self,neuron,layer,numberOfNeuronConnections):
 		targetNeurons = self.getClosestNeurons(neuron.id,layer,numberOfNeuronConnections)
+		print("Neuron ("+str(neuron.layerID)+" | "+str(neuron.id)+")  desired connections : "+str(numberOfNeuronConnections))
 
-		map(neuron.connectToNeuron, targetNeurons)
-
-		'''
 		for targetNeuron in targetNeurons:
 			neuron.connectToNeuron(targetNeuron)
-		'''
+	
 
 	def getClosestNeurons(self,neuronIndex, layer, numberOfNeuronConnections):
 		neurons = []
@@ -119,20 +121,32 @@ class NeuralNet():
 			neuronRange = []
 
 			if numberIsEven:
-				neuronRange = range(numberOfNeuronConnections - halfConnections +1, neuronIndex+halfConnections)
+				neuronRange = list(range((neuronIndex - halfConnections) +1, neuronIndex+halfConnections+1))
 			else:
-				neuronRange = range(numberOfNeuronConnections - halfConnections, neuronIndex+halfConnections)
+				neuronRange = list(range(neuronIndex - halfConnections, neuronIndex+halfConnections+1))
 
 			if(neuronRange and (neuronRange[0])< 0):
-				self.shiftRange(neuronRange, (neuronRange[0]*-1))
+				neuronRange = self.shiftRange(neuronRange, (neuronRange[0]*-1))
 
 			elif (neuronRange and (neuronRange[-1])>= len(layer.neurons)):
-				self.shiftRange(neuronRange, (len(layer.neurons) - neuronRange[-1]))
+				neuronRange = self.shiftRange(neuronRange, (len(layer.neurons) - neuronRange[-1]))
 
+			print("Neuron Index : "+str(neuronIndex)+" Neuron Range : "+str(neuronRange))
+			neurons = self.getSpecificNeurons(neuronRange, layer.neurons)
+			
 		return neurons 
 
+	def getSpecificNeurons(self,neuronRange, neuronList):
+
+		neurons = []
+
+		for neuronIndex in neuronRange:
+			neurons.append(neuronList[neuronIndex])
+
+		return neurons
+
 	def shiftRange(self,range, shift):
-		return map(lambda a: a+shift, range)
+		return list(map(lambda a: a+shift, range))
 
 	def getLayersToConnectTo(self,currentLayerIndex, connectionDepth):
 		maxPossibleIndex 	= len(self.layers)-1

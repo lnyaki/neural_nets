@@ -15,6 +15,7 @@ class ArtificialNeuron:
 
 	connectedNeurons 	= []
 	layerID = 0
+	id 		= 0
 
 	conditions = {
 		"reproductionEnergy" : 60
@@ -93,6 +94,8 @@ class ArtificialNeuron:
 		return ArtificialNeuron(self.position)
 
 	def connectToNeuron(self,targetNeuron):
+		print("Neuron ("+str(self.layerID)+"| "+str(self.id)+") --> ("+str(targetNeuron.layerID)+"| "+str(targetNeuron.id)+")")
+
 		self.connectedNeurons.append(targetNeuron)
 
 	def draw(self, gameDisplay):
