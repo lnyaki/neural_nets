@@ -1,9 +1,17 @@
 import pygame
 import random
+import sys
 import vectorOperations
 from artificialNeuron import ArtificialNeuron
 from nnLayer import NNLayer
 from neuralNet import NeuralNet
+
+INTERACTIONS = {
+	"hoverableElements" : [],
+	"hoveredElements" : [],
+	"clickableElements" : [],
+	"clickedElements" : []
+}
 
 def startGame():
 	WINDOW_SIZE 	= (1000,800)
@@ -12,17 +20,60 @@ def startGame():
 	pygame.init()
 	
 	gameDisplay 		= initializeGameDisplay(WINDOW_SIZE)
-	neuralNetPosition 	= (200,200)
-	layersStructure 	= [5,4,3,4]
+	neuralNetPosition 	= (200,100)
+	layersStructure 	= [5,8,4,4]
 	neuralNet 			= NeuralNet(neuralNetPosition,layersStructure)
 
 	darkGrey 			= (50,50,50)
 
 	while True:
-		gameDisplay.fill(darkGrey)
-
+		drawBackground(gameDisplay, darkGrey)
+		handleEvents()
 		neuralNet.draw(gameDisplay)
 		pygame.display.update()
+
+
+def drawBackground(gameDisplay,color):
+	gameDisplay.fill(color)
+
+def handleEvents():
+
+	for event in pygame.event.get():
+		if(isKeyboardEvent(event)):
+			handleKeyboardEvents(event)
+
+		elif(isMouseEvent(event)):
+			handleMouseEvents(event)
+
+
+		elif(event.type == pygame.QUIT):
+			pygame.quit()
+			sys.exit()
+
+def isKeyboardEvent(event):
+	return event.type in [pygame.KEYDOWN]
+
+def isMouseEvent(event):
+	return event.type in [pygame.MOUSEBUTTONUP,pygame.MOUSEBUTTONDOWN,pygame.MOUSEMOTION]
+
+def handleKeyboardEvents(event):
+	pass
+
+def handleMouseEvents(event):
+	
+	if(event.type == pygame.MOUSEMOTION):
+		hoveredElement = getHoveredElement(INTERACTIONS["hoverableElements"])
+
+		if(hoveredElement):
+			hoveredElement.hover()
+
+def getHoveredElement(hoverable_elements):
+	hoveredElements = []
+
+	for hoverable in hoverable_elements:
+		pass #test collision.
+
+	return hoveredElements
 
 def drawNeuralNet(layers, gameDisplay):
 	for layer in layers:

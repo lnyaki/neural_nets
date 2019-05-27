@@ -49,6 +49,7 @@ class ArtificialNeuron:
 		self.futureMove = (0,0)
 		self.layerID 	= layerID
 		self.connectedNeurons 	= []
+		self.backgroundColor = self.BLUE
 
 	def applyMove(self):
 		print("Position : "+str(self.position)+ "	Move by VECTOR "+str(self.futureMove))
@@ -105,6 +106,13 @@ class ArtificialNeuron:
 		self.connectedNeurons.append(targetNeuron)
 
 
+
+	def hover(self):
+		pass
+
+	def selected(self):
+		pass
+
 	def draw(self,gameDisplay):
 		self.drawNeuronBody(gameDisplay)
 		self.drawNeuronConnections(gameDisplay)
@@ -118,7 +126,7 @@ class ArtificialNeuron:
 
 		### Round ! int(round(number))
 		position = (int(round(self.position[0])),int(round(self.position[1])))
-		pygame.draw.circle(gameDisplay,self.BLUE,position,computedNeuronDrawRadius)
+		pygame.draw.circle(gameDisplay,self.backgroundColor,position,computedNeuronDrawRadius)
 		#pygame.draw.circle(gameDisplay,white,position,computedNeuronDrawRadius,borderThickness)
 
 		pygame.gfxdraw.aacircle(gameDisplay,position[0],position[1],computedNeuronDrawRadius, self.WHITE)
