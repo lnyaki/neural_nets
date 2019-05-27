@@ -21,8 +21,8 @@ def startGame():
 	
 	gameDisplay 		= initializeGameDisplay(WINDOW_SIZE)
 	neuralNetPosition 	= (200,100)
-	layersStructure 	= [5,8,4,4]
-	neuralNet 			= NeuralNet(neuralNetPosition,layersStructure)
+	layersStructure 	= [5,2,4,8]
+	neuralNet 			= NeuralNet(neuralNetPosition,layersStructure,NeuralNet.FULLMESH)
 
 	darkGrey 			= (50,50,50)
 

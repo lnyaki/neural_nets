@@ -8,13 +8,14 @@ class NeuralNet():
 	SPACE_BETWEEN_NEURONS 	= 10
 
 	LAYER_CONNECTION_DEPH	= 1
-	MAX_NEURON_CONNECTIONS 	= None
+	maxNeuronConnections 	= None
+	FULLMESH = -1
 
 	position = None
 	layers = []
 
 	def __init__(self, position, neuronsPerLayers, maxNeuronConnections = 4):
-		self.MAX_NEURON_CONNECTIONS = maxNeuronConnections
+		self.maxNeuronConnections = maxNeuronConnections
 		self.position 	= position
 		self.layers 	= self.generateLayers(neuronsPerLayers)
 		self.connectAllLayers()
@@ -90,7 +91,9 @@ class NeuralNet():
 
 
 	def connectCurrentLayer(self,currentLayer,layersToConnectTo):
-		listNumberOfConnectionsToLayers = self.distributeConnectionsToLayers(len(layersToConnectTo), self.MAX_NEURON_CONNECTIONS)
+		
+
+		listNumberOfConnectionsToLayers = self.distributeConnectionsToLayers(layersToConnectTo, self.maxNeuronConnections)
 
 		numberOfLayersToConnect = len(layersToConnectTo)
 
@@ -103,13 +106,20 @@ class NeuralNet():
 
 
 
-	def distributeConnectionsToLayers(self,numberOfLayers, numberOfNeuronConnections):
+	def distributeConnectionsToLayers(self,layersToConnectTo, numberOfNeuronConnections,):
 		''' Returns a list containing how many connections must be made on each layer
 		'''
 		layersConnectionList	= []
 		availlableConnections 	= numberOfNeuronConnections
+		numberOfLayers = len(layersToConnectTo)
 
-		if(numberOfLayers == 1):
+		if(numberOfNeuronConnections == self.FULLMESH) and numberOfLayers > 0 :
+			layersConnectionList = [len(layersToConnectTo[0].neurons)]
+
+		elif numberOfLayers == 0 :
+			pass
+
+		elif(numberOfLayers == 1):
 			layersConnectionList.append(numberOfNeuronConnections)
 		
 		elif (numberOfLayers == 2):
