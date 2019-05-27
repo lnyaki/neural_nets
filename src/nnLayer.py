@@ -2,17 +2,18 @@ from artificialNeuron import ArtificialNeuron
 import vectorOperations
 
 class NNLayer():
-	NEURON_SPACING = 80
+	NEURON_SPACING = 20
 	layerIndex	= 0
 	position 	= None
 	neurons		= []
+	neuronSize 	= 20
 
 
 	def __init__(self, startPosition, layerSize, layerIndex):
-		neuronSize = 40
+	
 		self.layerIndex	= layerIndex
 		self.position 	= startPosition
-		self.neurons 	= self.generateNeurons(startPosition,layerSize, neuronSize)
+		self.neurons 	= self.generateNeurons(startPosition,layerSize, self.neuronSize)
 
 	def __str__(self):
 		result = "["+str(self.layerIndex)+"]"
@@ -29,7 +30,7 @@ class NNLayer():
 		neuronPositionIncrement = self.getNeuronSpacingVector()
 
 		for neuronId in range(layerSize):
-			neuron = ArtificialNeuron(neuronPosition, neuronId, self.layerIndex)
+			neuron = ArtificialNeuron(neuronPosition, neuronId, self.layerIndex, neuronSize)
 			neuronList.append(neuron)
 
 			neuronPosition = vectorOperations.addVectors(neuron.position,neuronPositionIncrement)
@@ -44,7 +45,7 @@ class NNLayer():
 		return self.neurons[neuronIndex]
 
 	def getNeuronSpacingVector(self):
-		return (0, self.NEURON_SPACING)
+		return (0, self.NEURON_SPACING+(2*self.neuronSize))
 
 	def append(self,neuron):
 		self.neurons.append(neuron)

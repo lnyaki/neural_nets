@@ -1,8 +1,9 @@
 import pygame
 import pygame.gfxdraw
 import vectorOperations
+from interactiveElement import InteractiveElement
 
-class ArtificialNeuron:
+class ArtificialNeuron(InteractiveElement):
 	MINIMAL_MOVEMENT = (0.01,0.01)
 	numberOfDecimals = 4
 
@@ -11,7 +12,7 @@ class ArtificialNeuron:
 	previousMovement 	= (0,0)
 
 	activationCharge 	= 0
-	defaultDrawSize 	= 30
+	neuronSize 			= 30
 
 	connectedNeurons 	= None
 	layerID = 0
@@ -43,13 +44,15 @@ class ArtificialNeuron:
 		}
 	}
 
-	def __init__(self, position, id, layerID = 0):
+	def __init__(self, position, id, layerID,neuronSize = 30):
 		self.position 	= position
 		self.id 		= id
 		self.futureMove = (0,0)
 		self.layerID 	= layerID
-		self.connectedNeurons 	= []
+		self.connectedNeurons		= []
+		self.incomingConnections 	= []
 		self.backgroundColor = self.BLUE
+		self.neuronSize = neuronSize
 
 	def applyMove(self):
 		print("Position : "+str(self.position)+ "	Move by VECTOR "+str(self.futureMove))
@@ -90,12 +93,8 @@ class ArtificialNeuron:
 		return (self.position[0] + vector[0], self.position[1] + vector[1])
 
 	def getDistanceVector(self,neuron):
-		print("Neuron 1 : "+str(neuron1.position))
-		print("Neuron 2 : "+str(neuron2.position))
 		return (neuron.position[0] - self.position[0], neuron.position[1] - self.position[1])
 
-	def collision(self,neuron):
-		return False
 
 	def neuronDivision(self):
 		return ArtificialNeuron(self.position)
@@ -104,8 +103,21 @@ class ArtificialNeuron:
 		print("Neuron ("+str(self.layerID)+"| "+str(self.id)+") --> ("+str(targetNeuron.layerID)+"| "+str(targetNeuron.id)+")")
 
 		self.connectedNeurons.append(targetNeuron)
+		targetNeuron.gettingConnectedBy(self)
 
 
+	def gettingConnectedBy(self,neuron):
+		self.incomingConnections.append(neuron)
+
+	def checkCollision(self,position):
+		distanceFromNeuron = 0
+		
+		
+	def collision(self,neuron):
+		return False
+
+	def checkHover(self,position):
+		pass
 
 	def hover(self):
 		pass
@@ -120,7 +132,7 @@ class ArtificialNeuron:
 	def drawNeuronBody(self, gameDisplay):
 
 		borderThickness = 2
-		computedNeuronDrawRadius = self.defaultDrawSize
+		computedNeuronDrawRadius = self.neuronSize
 
 		self.positionNeuronWithinWindow(gameDisplay, computedNeuronDrawRadius)
 

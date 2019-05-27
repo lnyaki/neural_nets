@@ -62,16 +62,17 @@ def handleKeyboardEvents(event):
 def handleMouseEvents(event):
 	
 	if(event.type == pygame.MOUSEMOTION):
-		hoveredElement = getHoveredElement(INTERACTIONS["hoverableElements"])
+		hoveredElement = getHoveredElement(pygame.mouse.get_pos,INTERACTIONS["hoverableElements"])
 
 		if(hoveredElement):
 			hoveredElement.hover()
 
-def getHoveredElement(hoverable_elements):
+def getHoveredElement(mousePosition, hoverable_elements):
 	hoveredElements = []
 
 	for hoverable in hoverable_elements:
-		pass #test collision.
+		if(hoverable.collision(mousePosition)):
+			hoveredElements.append(hoverable)
 
 	return hoveredElements
 

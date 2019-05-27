@@ -18,10 +18,8 @@ def scalarVectorMultiplication(vector, multiplier):
 def getGravityScalar(distance, mass1, mass2):
 	return (GRAVITY * mass1 * mass2)/ (distance ** 2)
 
-def getDistanceVector(neuron1, neuron2):
-	print("Neuron 1 : "+str(neuron1.position))
-	print("Neuron 2 : "+str(neuron2.position))
-	return (neuron2.position[0] - neuron1.position[0], neuron2.position[1] - neuron1.position[1])
+def getDistanceVector(point1, point2):
+	return (point2[0] - point1[0], point2[1] - point1[1])
 
 def addVectorList(vectorList):
 	print("Add Vector List")

@@ -30,11 +30,51 @@ class NeuralNet():
 	def generateLayers(self, neuronsPerLayers):
 		layers = []
 
+		biggestLayerSize = self.getBiggestLayerSize(neuronsPerLayers)
+
 		for i in range(len(neuronsPerLayers)):
 			numberOfNeuronsInLayer = neuronsPerLayers[i]
-			layers.append(self.generateSingleLayer(i,numberOfNeuronsInLayer))
+			layers.append(self.generateSingleLayer(i,numberOfNeuronsInLayer, biggestLayerSize))
 
 		return layers
+
+	def getBiggestLayerSize(self,layerSizes):
+		maxSize = 0
+
+		for size in layerSizes:
+			if(size > maxSize):
+				maxSize = size
+
+		return maxSize
+
+	def generateSingleLayer(self, layerNumber,numberOfNeurons, maxLayerSize):
+		layerPosition 				= self.computeLayerPosition(layerNumber)
+
+		verticalOffset 				= (0,0) #self.getVerticalLayerOffset(numberOfNeurons,maxLayerSize)
+		verticallyAjustedPosition	= vectorOperations.addVectors(layerPosition,verticalOffset)
+
+		layer 						= NNLayer(verticallyAjustedPosition,numberOfNeurons, layerNumber)
+
+		return layer
+
+	def getVerticalLayerOffset(self,neuronsInLayer, maxLayerSize, neuronSize):
+
+		sizeDifference = maxLayerSize - neuronsInLayer
+
+		if(sizeDifference == 0):
+			return (0,0)
+
+		verticalDifference = floor((self.SPACE_BETWEEN_NEURONS + sizeDifference*(neuronSize)) /2)
+
+		return (0, verticalDifference)
+
+	def computeLayerPosition(self,layerNumber):
+		spacingVector 	= (self.SPACE_BETWEEN_LAYERS,0)
+		layerOffset 	= vectorOperations.scalarVectorMultiplication(spacingVector,layerNumber)
+		
+
+		return vectorOperations.addVectors(self.position,layerOffset)
+
 
 	def connectAllLayers(self):
 
@@ -169,18 +209,6 @@ class NeuralNet():
 
 		return layers
 
-	def generateSingleLayer(self, layerNumber,numberOfNeurons):
-		layerPosition 	= self.computeLayerPosition(layerNumber)
-		layer 			= NNLayer(layerPosition,numberOfNeurons, layerNumber)
-
-		return layer
-
-	def computeLayerPosition(self,layerNumber):
-		spacingVector 	= (self.SPACE_BETWEEN_LAYERS,0)
-		layerOffset 	= vectorOperations.scalarVectorMultiplication(spacingVector,layerNumber)
-		
-
-		return vectorOperations.addVectors(self.position,layerOffset)
 
 	def draw(self,surface):
 		for layer in self.layers:
