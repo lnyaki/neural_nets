@@ -2,11 +2,11 @@ from artificialNeuron import ArtificialNeuron
 import vectorOperations
 
 class NNLayer():
-	NEURON_SPACING = 20
+	NEURON_SPACING = 10
 	layerIndex	= 0
 	position 	= None
 	neurons		= []
-	neuronSize 	= 20
+	neuronSize 	= 30
 
 
 	def __init__(self, startPosition, layerSize, layerIndex):

@@ -50,21 +50,21 @@ class NeuralNet():
 	def generateSingleLayer(self, layerNumber,numberOfNeurons, maxLayerSize):
 		layerPosition 				= self.computeLayerPosition(layerNumber)
 
-		verticalOffset 				= (0,0) #self.getVerticalLayerOffset(numberOfNeurons,maxLayerSize)
+		verticalOffset 				= self.getVerticalLayerOffset(numberOfNeurons,maxLayerSize,NNLayer.neuronSize,NNLayer.NEURON_SPACING) # (0,0)
 		verticallyAjustedPosition	= vectorOperations.addVectors(layerPosition,verticalOffset)
 
 		layer 						= NNLayer(verticallyAjustedPosition,numberOfNeurons, layerNumber)
 
 		return layer
 
-	def getVerticalLayerOffset(self,neuronsInLayer, maxLayerSize, neuronSize):
+	def getVerticalLayerOffset(self,neuronsInLayer, maxLayerSize, neuronSize,neuronSpacing):
 
 		sizeDifference = maxLayerSize - neuronsInLayer
 
 		if(sizeDifference == 0):
 			return (0,0)
 
-		verticalDifference = floor((self.SPACE_BETWEEN_NEURONS + sizeDifference*(neuronSize)) /2)
+		verticalDifference = math.floor((sizeDifference * (neuronSize+ neuronSpacing/2)))
 
 		return (0, verticalDifference)
 

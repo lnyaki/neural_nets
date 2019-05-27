@@ -103,5 +103,6 @@ class NeuralNetTest(unittest.TestCase):
 				self.assertLessEqual(len(n.connectedNeurons),connectionsPerNeuron)
 
 
+
 if __name__ == '__main__':
 	unittest.main()
