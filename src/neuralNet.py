@@ -155,29 +155,13 @@ class NeuralNet():
 
 
 	def connectNeuronToSingleLayer(self,neuron,layer,numberOfNeuronConnections):
-		targetNeurons = self.getClosestNeurons(neuron.id,layer,numberOfNeuronConnections)
-		#targetNeurons = self.getClosestNeurons2(neuron.neuronSize,layer,numberOfNeuronConnections)
+		#targetNeurons = self.getClosestNeurons(neuron.id,layer,numberOfNeuronConnections)
+		targetNeurons = self.getClosestNeurons2(neuron.position[1],layer,numberOfNeuronConnections)
 		print("Neuron ("+str(neuron.layerID)+" | "+str(neuron.id)+")  desired connections : "+str(numberOfNeuronConnections))
 
 		for targetNeuron in targetNeurons:
 			neuron.connectToNeuron(targetNeuron)
 	
-
-
-		'''
-		else:
-			neuronList = layer.neurons
-
-			orderedHeightDict = self.getNeuronsHeightDictionary(layer)
-			neuronVerticalValue = neuron.position[1]
-
-			returnClosestsNeurons(neuronVerticalValue,heightDict)
-			1. Remove vertical value from all elements
-			2. square then squareroot
-			3. Sort
-			4. Take x first
-
-		'''
 
 	def getClosestNeurons2(self, neuronVerticalValue, layer, numberOfNeuronConnections):
 		neurons = []
@@ -187,18 +171,11 @@ class NeuralNet():
 
 		else:
 			heightDict = self.getNeuronsHeightDictionary(layer)
-
-			print("Height DICT result !")
-			print(heightDict)
-
 			heightList = self.heightDictToList(heightDict)
 			
-			print("heightDicToList. Vertical value : "+str(neuronVerticalValue))
-			print(heightList)
-
 			# https://stackoverflow.com/questions/3121979/how-to-sort-list-tuple-of-lists-tuples
-			tupleNeurons = sorted(list(map(lambda x: (x[0],math.sqrt((x[1]-neuronVerticalValue)**2)),heightList )),key=lambda tup: tup[1])
-			neurons = [tupleNeurons[x] for x in range(numberOfNeuronConnections)]
+			tupleNeurons 	= sorted(list(map(lambda x: (x[0],x[1][0],math.sqrt((x[1][1]-neuronVerticalValue)**2)),heightList )),key=lambda tup: tup[2])
+			neurons 		= [tupleNeurons[x][1] for x in range(numberOfNeuronConnections)]
 
 		return neurons 
 
@@ -237,7 +214,8 @@ class NeuralNet():
 		heightList = {}
 
 		for neuron in layer.neurons:
-			heightList[neuron.id] = neuron.position[1]
+			#heightList[neuron.id] = neuron.position[1]
+			heightList[neuron.id] = (neuron, neuron.position[1])
 
 		return heightList
 
