@@ -5,6 +5,8 @@ import vectorOperations
 from artificialNeuron import ArtificialNeuron
 from nnLayer import NNLayer
 from neuralNet import NeuralNet
+from button import Button
+from guiContainer import GUIcontainer
 
 INTERACTIONS = {
 	"hoverableElements" : [],
@@ -12,6 +14,8 @@ INTERACTIONS = {
 	"clickableElements" : [],
 	"clickedElements" : []
 }
+
+GUIelements			= []
 
 def startGame():
 	WINDOW_SIZE 	= (1000,800)
@@ -22,28 +26,43 @@ def startGame():
 	gameDisplay 		= initializeGameDisplay(WINDOW_SIZE)
 	neuralNetPosition 	= (200,100)
 	layersStructure 	= [5,2,4,8]
-	neuralNet 			= NeuralNet(neuralNetPosition,layersStructure,8)
-
+	neuralNet 			= NeuralNet(neuralNetPosition,layersStructure,4)
+	
 	darkGrey 			= (50,50,50)
 
+	buttonSize = (150,40)
+	button = Button("Hello Button",buttonSize)
+	button2 = Button("hi", (40,40))
+	containerPosition = (50,750)
+	container = GUIcontainer(containerPosition,GUIcontainer.HORIZONTAL,20)
+	container.add(button)
+	container.add(button2)
+	GUIelements.append(container)
+
 	while True:
+		handleEvents(GUIelements)
 		drawBackground(gameDisplay, darkGrey)
-		handleEvents()
 		neuralNet.draw(gameDisplay)
+		drawUserInterface(gameDisplay, GUIelements)
 		pygame.display.update()
 
 
 def drawBackground(gameDisplay,color):
 	gameDisplay.fill(color)
 
-def handleEvents():
+def drawUserInterface(gameDisplay, guiElements):
+	for element in guiElements:
+		element.draw(gameDisplay)
+
+
+def handleEvents(guiElements):
 
 	for event in pygame.event.get():
 		if(isKeyboardEvent(event)):
 			handleKeyboardEvents(event)
 
 		elif(isMouseEvent(event)):
-			handleMouseEvents(event)
+			handleMouseEvents(event,guiElements)
 
 
 		elif(event.type == pygame.QUIT):
@@ -59,20 +78,22 @@ def isMouseEvent(event):
 def handleKeyboardEvents(event):
 	pass
 
-def handleMouseEvents(event):
+def handleMouseEvents(event,guiElements):
 	
 	if(event.type == pygame.MOUSEMOTION):
-		hoveredElement = getHoveredElement(pygame.mouse.get_pos,INTERACTIONS["hoverableElements"])
+		hoveredElements = getHoveredElement(pygame.mouse.get_pos(),guiElements)
 
-		if(hoveredElement):
-			hoveredElement.hover()
+		if(hoveredElements):
+			for elt in hoveredElements:
+				elt.hover()
 
 def getHoveredElement(mousePosition, hoverable_elements):
 	hoveredElements = []
 
 	for hoverable in hoverable_elements:
-		if(hoverable.collision(mousePosition)):
+		if(hoverable.checkCollision(mousePosition)):
 			hoveredElements.append(hoverable)
+			hoverable.hover()
 
 	return hoveredElements
 
