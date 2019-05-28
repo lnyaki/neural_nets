@@ -50,11 +50,11 @@ class NeuralNet():
 
 	def generateSingleLayer(self, layerNumber,numberOfNeurons, maxLayerSize):
 		layerPosition 				= self.computeLayerPosition(layerNumber)
-
 		verticalOffset 				= self.getVerticalLayerOffset(numberOfNeurons,maxLayerSize,NNLayer.neuronSize,NNLayer.NEURON_SPACING) # (0,0)
 		verticallyAjustedPosition	= vectorOperations.addVectors(layerPosition,verticalOffset)
 
 		layer 						= NNLayer(verticallyAjustedPosition,numberOfNeurons, layerNumber)
+		layer.setVerticalNeuronShift(math.floor((maxLayerSize - numberOfNeurons)/2))
 
 		return layer
 
@@ -106,11 +106,12 @@ class NeuralNet():
 
 
 
-	def distributeConnectionsToLayers(self,layersToConnectTo, numberOfNeuronConnections,):
+	def distributeConnectionsToLayers(self,layersToConnectTo, numberOfNeuronConnections):
 		''' Returns a list containing how many connections must be made on each layer
 		'''
 		layersConnectionList	= []
 		availlableConnections 	= numberOfNeuronConnections
+
 		numberOfLayers = len(layersToConnectTo)
 
 		if(numberOfNeuronConnections == self.FULLMESH) and numberOfLayers > 0 :
@@ -155,11 +156,60 @@ class NeuralNet():
 
 	def connectNeuronToSingleLayer(self,neuron,layer,numberOfNeuronConnections):
 		targetNeurons = self.getClosestNeurons(neuron.id,layer,numberOfNeuronConnections)
+		#targetNeurons = self.getClosestNeurons2(neuron.neuronSize,layer,numberOfNeuronConnections)
 		print("Neuron ("+str(neuron.layerID)+" | "+str(neuron.id)+")  desired connections : "+str(numberOfNeuronConnections))
 
 		for targetNeuron in targetNeurons:
 			neuron.connectToNeuron(targetNeuron)
 	
+
+
+		'''
+		else:
+			neuronList = layer.neurons
+
+			orderedHeightDict = self.getNeuronsHeightDictionary(layer)
+			neuronVerticalValue = neuron.position[1]
+
+			returnClosestsNeurons(neuronVerticalValue,heightDict)
+			1. Remove vertical value from all elements
+			2. square then squareroot
+			3. Sort
+			4. Take x first
+
+		'''
+
+	def getClosestNeurons2(self, neuronVerticalValue, layer, numberOfNeuronConnections):
+		neurons = []
+
+		if(len(layer.neurons) <= numberOfNeuronConnections):
+			neurons = layer.neurons
+
+		else:
+			heightDict = self.getNeuronsHeightDictionary(layer)
+
+			print("Height DICT result !")
+			print(heightDict)
+
+			heightList = self.heightDictToList(heightDict)
+			
+			print("heightDicToList. Vertical value : "+str(neuronVerticalValue))
+			print(heightList)
+
+			# https://stackoverflow.com/questions/3121979/how-to-sort-list-tuple-of-lists-tuples
+			tupleNeurons = sorted(list(map(lambda x: (x[0],math.sqrt((x[1]-neuronVerticalValue)**2)),heightList )),key=lambda tup: tup[1])
+			neurons = [tupleNeurons[x] for x in range(numberOfNeuronConnections)]
+
+		return neurons 
+
+
+	def heightDictToList(self,heightDict):
+		result = []
+
+		for key,value in heightDict.items():
+			result.append((key,value))
+
+		return result
 
 	def getClosestNeurons(self,neuronIndex, layer, numberOfNeuronConnections):
 		neurons = []
@@ -168,16 +218,7 @@ class NeuralNet():
 			neurons = layer.neurons
 
 		else:
-			numberIsEven = (numberOfNeuronConnections %2 == 0)
-
-			halfConnections = math.floor(numberOfNeuronConnections/2)
-			neuronRange = []
-
-			if numberIsEven:
-				neuronRange = list(range((neuronIndex - halfConnections) +1, neuronIndex+halfConnections+1))
-			else:
-				neuronRange = list(range(neuronIndex - halfConnections, neuronIndex+halfConnections+1))
-
+			neuronRange = self.generateSelectionRange(neuronIndex, numberOfNeuronConnections)
 
 			if(neuronRange and (neuronRange[0])< 0):
 				neuronRange = self.shiftRange(neuronRange, (neuronRange[0]*-1))
@@ -187,8 +228,30 @@ class NeuralNet():
 
 			print("Neuron Index : "+str(neuronIndex)+" Neuron Range : "+str(neuronRange)+" NeuronList length : "+str(len(layer.neurons)))
 			neurons = self.getSpecificNeurons(neuronRange, layer.neurons)
-			
+				
 		return neurons 
+
+
+	def getNeuronsHeightDictionary(self,layer):
+
+		heightList = {}
+
+		for neuron in layer.neurons:
+			heightList[neuron.id] = neuron.position[1]
+
+		return heightList
+
+	def generateSelectionRange(self,neuronIndex, numberOfNeuronConnections):
+		neuronRange = []
+		halfConnections = math.floor(numberOfNeuronConnections/2)
+		numberIsEven = (numberOfNeuronConnections %2 == 0)
+
+		if numberIsEven:
+			neuronRange = list(range((neuronIndex - halfConnections) +1, neuronIndex+halfConnections+1))
+		else:
+			neuronRange = list(range(neuronIndex - halfConnections, neuronIndex+halfConnections+1))
+
+		return neuronRange
 
 	def getSpecificNeurons(self,neuronRange, neuronList):
 
@@ -198,6 +261,7 @@ class NeuralNet():
 			neurons.append(neuronList[neuronIndex])
 
 		return neurons
+
 
 	def shiftRange(self,range, shift):
 		return list(map(lambda a: a+shift, range))

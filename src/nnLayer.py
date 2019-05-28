@@ -14,6 +14,7 @@ class NNLayer():
 		self.layerIndex	= layerIndex
 		self.position 	= startPosition
 		self.neurons 	= self.generateNeurons(startPosition,layerSize, self.neuronSize)
+		self.verticalNeuronShift = 0
 
 	def __str__(self):
 		result = "["+str(self.layerIndex)+"]"
@@ -37,6 +38,8 @@ class NNLayer():
 
 		return neuronList
 
+	def setVerticalNeuronShift(self,neuronShift):
+		self.verticalNeuronShift = neuronShift
 
 	def linkNeuronLayers(self, connectionsPerNeuron):
 		pass
@@ -49,6 +52,7 @@ class NNLayer():
 
 	def append(self,neuron):
 		self.neurons.append(neuron)
+		neuron.setLayer(self)
 
 	def draw(self,gameDisplay):
 		for neuron in self.neurons:

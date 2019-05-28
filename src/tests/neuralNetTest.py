@@ -18,7 +18,7 @@ class NeuralNetTest(unittest.TestCase):
 
 		self.assertEqual(3,len(nn.layers))
 
-	def testDistributeConnectionsToLayers(self):
+	def DistributeConnectionsToLayers(self):
 		layerMap 	= [4,3,4]
 		nn 			= NeuralNet((0,0),layerMap)
 
@@ -69,8 +69,6 @@ class NeuralNetTest(unittest.TestCase):
 		print("------==== After getClosestNeurons ====-------")
 
 	def testShiftRange(self):
-		print()
-		print("||||||| ------======= Shift Range")
 		numRange = [0,1,2]
 		shift = 2
 		expectedResult = [2,3,4]
@@ -78,14 +76,11 @@ class NeuralNetTest(unittest.TestCase):
 		nn = self.initNeuralNet([4,5,4])
 		result = nn.shiftRange(numRange,shift)
 
-		print("Range : "+str(numRange)+" "+str(result)+" Shift value : "+str(shift))
 		self.assertEqual(result, expectedResult)
 
-		print("||||||| ------======= Shift Range]")
 
 	def testRange(self):
 		result = list(range(-1,1+1))
-		print("XXXX result range : "+str(result))
 		self.assertEqual(result,[-1,0,1])
 
 
@@ -103,6 +98,31 @@ class NeuralNetTest(unittest.TestCase):
 				self.assertLessEqual(len(n.connectedNeurons),connectionsPerNeuron)
 
 
+	def Sorting(self):
+		layerSize 	= 4
+		layerIndex 	= 0
+
+		layer = NNLayer((0,0),layerSize,layerIndex)
+
+		nn = nn = self.initNeuralNet([4,4,4],3)
+		print("-------//////////// Test sorting //////////////--------")
+		res = nn.getOrderedNeuronsHeightDictionary(layer)
+		
+		print(res)
+
+	def testGetClosestNeurons2(self):
+		layerSize 	= 6
+		layerIndex 	= 0
+		neuronConnections = 3
+		layer = NNLayer((0,0),layerSize,layerIndex)
+
+		nn = self.initNeuralNet([4,5,4],3)
+
+		print("-------//////////// Test closestNeurons //////////////--------")
+		res = nn.getClosestNeurons2(50,layer,neuronConnections)
+		print("RESULT :")
+		print(res)
+		self.assertEqual(len(res),neuronConnections)
 
 if __name__ == '__main__':
 	unittest.main()

@@ -49,6 +49,7 @@ class ArtificialNeuron(InteractiveElement):
 		self.id 		= id
 		self.futureMove = (0,0)
 		self.layerID 	= layerID
+		self.layer 		= None
 		self.connectedNeurons		= []
 		self.incomingConnections 	= []
 		self.backgroundColor = self.BLUE
@@ -108,6 +109,10 @@ class ArtificialNeuron(InteractiveElement):
 
 	def gettingConnectedBy(self,neuron):
 		self.incomingConnections.append(neuron)
+
+
+	def setLayer(self,parentLayer):
+		self.layer = parentLayer
 
 	def checkCollision(self,position):
 		distanceFromNeuron = 0
