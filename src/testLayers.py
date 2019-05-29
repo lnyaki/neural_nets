@@ -93,10 +93,16 @@ def getHoveredElement(mousePosition, hoverable_elements):
 	hoveredElements = []
 
 	for hoverable in hoverable_elements:
+		hovered = hoverable.getHoveredElements(mousePosition)
+
+		if(hovered):
+			hoveredElements+= hovered
+	'''
+	for hoverable in hoverable_elements:
 		if(hoverable.checkCollision(mousePosition)):
 			hoveredElements.append(hoverable)
 			hoverable.hover()
-
+	'''
 	return hoveredElements
 
 def drawNeuralNet(layers, gameDisplay):

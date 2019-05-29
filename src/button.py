@@ -21,7 +21,7 @@ class Button(InteractiveElement):
 		pass
 
 	def hover(self):
-		pass
+		print("Test hover : "+self.textValue)
 
 	def setContainer(self,container):
 		super().setContainer(container)

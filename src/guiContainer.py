@@ -34,6 +34,39 @@ class GUIcontainer(InteractiveElement):
 
 		return nextPosition
 
+	def checkCollision(self,position):
+		collision = False
+
+		for element in self.elements:
+			if(element.checkCollision(position)):
+				collision = True
+				break
+
+		return collision
+
+	def hover(self):
+		pass
+
+		'''
+
+		hoveredElements = self.getHoveredElements()
+
+		for element in hoveredElements:
+			element.hover()
+		'''
+
+	def getHoveredElements(self, position):
+		hovered = []
+
+		for element in self.elements:
+			if element.checkCollision(position):
+				hovered.append(element)
+
+		if(self.checkCollision(position)):
+			hovered.append(self)
+
+		return hovered
+
 	def draw(self, gameDisplay):
 		for element in self.elements:
 			element.draw(gameDisplay)
