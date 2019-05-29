@@ -33,10 +33,12 @@ def startGame():
 	buttonSize = (150,40)
 	button = Button("Hello Button",buttonSize)
 	button2 = Button("hi", (40,40))
+	button3 = Button("Ca marche?",(200,40))
 	containerPosition = (50,750)
 	container = GUIcontainer(containerPosition,GUIcontainer.HORIZONTAL,20)
 	container.add(button)
 	container.add(button2)
+	container.add(button3)
 	GUIelements.append(container)
 
 	while True:

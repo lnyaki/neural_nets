@@ -39,7 +39,6 @@ class Button(InteractiveElement):
 	def draw(self, gameDisplay):
 		pygame.draw.rect(gameDisplay,(255,0,0),self.rectangle)
 		pygame.gfxdraw.rectangle(gameDisplay,self.rectangle,(255,255,255))
-		gameDisplay.blit(self.textObject,(self.rectangle.left,self.rectangle.top))
-		
+		gameDisplay.blit(self.textObject, self.textObject.get_rect(center=self.rectangle.center))
 
 
