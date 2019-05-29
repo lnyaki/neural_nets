@@ -10,6 +10,9 @@ class InteractiveElement():
 	def hover(self):
 		pass
 
+	def unHover(self):
+		pass
+
 	def checkCollision(self,position):
 		pass
 

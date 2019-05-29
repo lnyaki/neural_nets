@@ -12,7 +12,8 @@ INTERACTIONS = {
 	"hoverableElements" : [],
 	"hoveredElements" : [],
 	"clickableElements" : [],
-	"clickedElements" : []
+	"clickedElements" : [],
+	"mouseDown" : []
 }
 
 GUIelements			= []
@@ -83,11 +84,26 @@ def handleKeyboardEvents(event):
 def handleMouseEvents(event,guiElements):
 	
 	if(event.type == pygame.MOUSEMOTION):
-		hoveredElements = getHoveredElement(pygame.mouse.get_pos(),guiElements)
+		handleHover(pygame.mouse.get_pos(),guiElements)
 
-		if(hoveredElements):
-			for elt in hoveredElements:
-				elt.hover()
+def handleHover(mousePosition,guiElements):
+	hoveredElements = getHoveredElement(mousePosition,guiElements)
+
+	if(hoveredElements):
+		applyHover(hoveredElements)
+
+	applyUnHover(INTERACTIONS["hoveredElements"],hoveredElements)
+	INTERACTIONS["hoveredElements"] = hoveredElements
+
+def applyUnHover(previouslyHovered, currentlyHovered):
+	for elt in previouslyHovered:
+		if not elt in currentlyHovered:
+			elt.unHover()
+
+
+def applyHover(hoverList):
+	for elt in hoverList:
+		elt.hover()
 
 def getHoveredElement(mousePosition, hoverable_elements):
 	hoveredElements = []
